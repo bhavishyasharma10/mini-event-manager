@@ -1,13 +1,23 @@
 import { useMutation } from '@apollo/client';
 import { ADD_ATTENDEE, REMOVE_ATTENDEE } from '@/graphql/operations/mutations';
 import { GET_EVENT } from '@/graphql/operations/queries';
-import { Attendee, RSVP } from '@/lib/types/graphql';
+import { Attendee, RSVP, AddAttendeeInput } from '@/lib/types/graphql';
 
 interface UseAttendeeOptions {
   eventId: string;
 }
 
-export const useAttendee = ({ eventId }: UseAttendeeOptions) => {
+interface UseAttendeeReturn {
+  // Loading states
+  isAddingAttendee: boolean;
+  isRemovingAttendee: boolean;
+  
+  // Operations
+  addAttendee: (input: Omit<AddAttendeeInput, 'eventId'>) => Promise<Attendee>;
+  removeAttendee: (attendeeId: string) => Promise<boolean>;
+}
+
+export const useAttendee = ({ eventId }: UseAttendeeOptions): UseAttendeeReturn => {
   // Mutation for adding an attendee
   const [addAttendeeMutation, { loading: isAddingAttendee }] = useMutation(ADD_ATTENDEE, {
     refetchQueries: [
@@ -28,7 +38,7 @@ export const useAttendee = ({ eventId }: UseAttendeeOptions) => {
     ],
   });
 
-  const addAttendee = async (input: { name: string; email?: string; rsvp: RSVP }) => {
+  const addAttendee = async (input: Omit<AddAttendeeInput, 'eventId'>): Promise<Attendee> => {
     try {
       const { data } = await addAttendeeMutation({
         variables: {
@@ -45,7 +55,7 @@ export const useAttendee = ({ eventId }: UseAttendeeOptions) => {
     }
   };
 
-  const removeAttendee = async (attendeeId: string) => {
+  const removeAttendee = async (attendeeId: string): Promise<boolean> => {
     try {
       const { data } = await removeAttendeeMutation({
         variables: {

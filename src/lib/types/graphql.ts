@@ -31,3 +31,15 @@ export interface AddAttendeeInput {
     email?: string;
     rsvp: RSVP;
 }
+
+export type Resolvers = {
+    Query: {
+      events: () => Event[];
+      event: (_: unknown, args: { id: string }) => Event | null;
+    };
+    Mutation: {
+      createEvent: (_: unknown, args: { input: CreateEventInput }) => Event;
+      addAttendee: (_: unknown, args: { input: AddAttendeeInput }) => Attendee;
+      removeAttendee: (_: unknown, args: { eventId: string; attendeeId: string }) => boolean;
+    };
+  }; 

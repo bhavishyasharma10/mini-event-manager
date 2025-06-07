@@ -1,13 +1,33 @@
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_EVENTS, GET_EVENT } from '@/graphql/operations/queries';
 import { CREATE_EVENT } from '@/graphql/operations/mutations';
-import { Event } from '@/lib/types/graphql';
+import { Event, CreateEventInput } from '@/lib/types/graphql';
 
 interface UseEventOptions {
   eventId?: string;
 }
 
-export const useEvent = ({ eventId }: UseEventOptions = {}) => {
+interface UseEventReturn {
+  // Data
+  events: Event[] | undefined;
+  event: Event | undefined;
+  
+  // Loading states
+  isLoadingEvents: boolean;
+  isLoadingEvent: boolean;
+  isCreatingEvent: boolean;
+  
+  // Error states
+  eventsError: Error | undefined;
+  eventError: Error | undefined;
+  
+  // Operations
+  createEvent: (input: CreateEventInput) => Promise<Event>;
+  refetchEvents: () => Promise<any>;
+  refetchEvent: () => Promise<any>;
+}
+
+export const useEvent = ({ eventId }: UseEventOptions = {}): UseEventReturn => {
   // Query for all events
   const { 
     data: eventsData, 
@@ -36,12 +56,12 @@ export const useEvent = ({ eventId }: UseEventOptions = {}) => {
     },
   });
 
-  const createEvent = async (input: { title: string; date: string }) => {
+  const createEvent = async (input: CreateEventInput): Promise<Event> => {
     try {
       const { data } = await createEventMutation({
         variables: { input },
       });
-      return data.createEvent;
+      return data.createEvent as Event;
     } catch (error) {
       console.error('Error creating event:', error);
       throw error;
