@@ -1,49 +1,30 @@
 'use client';
 
 import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
 import { useParams, useRouter } from 'next/navigation';
-import { Event, Attendee, RSVP } from '@/lib/types/graphql';
-import { GET_EVENT } from '@/graphql/operations/queries';
-import { ADD_ATTENDEE, REMOVE_ATTENDEE } from '@/graphql/operations/mutations';
+import { Event, RSVP } from '@/lib/types/graphql';
 import { EventHeader } from '@/components/events/EventHeader';
 import { AttendeeList } from '@/components/events/AttendeeList';
 import { AddAttendeeForm } from '@/components/events/AddAttendeeForm';
 import { Card } from '@/components/ui/Card';
+import { useEvent } from '@/hooks/useEvent';
+import { useAttendee } from '@/hooks/useAttendee';
 
 export default function EventDetailPage() {
   const params = useParams();
   const router = useRouter();
   const eventId = params.id as string;
 
-  const { loading, error, data } = useQuery<{ event: Event }>(GET_EVENT, {
-    variables: { id: eventId },
-  });
+  const { event, isLoadingEvent, eventError } = useEvent({ eventId });
+  const { addAttendee, removeAttendee, isAddingAttendee, isRemovingAttendee } = useAttendee({ eventId });
 
-  const [addAttendee, { loading: isAdding }] = useMutation(ADD_ATTENDEE, {
-    refetchQueries: [{ query: GET_EVENT, variables: { id: eventId } }],
-  });
-
-  const [removeAttendee, { loading: isRemoving }] = useMutation(REMOVE_ATTENDEE, {
-    refetchQueries: [{ query: GET_EVENT, variables: { id: eventId } }],
-  });
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data?.event) return <div>Event not found</div>;
+  if (isLoadingEvent) return <div>Loading...</div>;
+  if (eventError) return <div>Error: {eventError.message}</div>;
+  if (!event) return <div>Event not found</div>;
 
   const handleAddAttendee = async (values: { name: string; email?: string; rsvp: RSVP }) => {
     try {
-      await addAttendee({
-        variables: {
-          input: {
-            eventId,
-            name: values.name,
-            email: values.email,
-            rsvp: values.rsvp,
-          },
-        },
-      });
+      await addAttendee(values);
     } catch (error) {
       console.error('Error adding attendee:', error);
     }
@@ -51,12 +32,7 @@ export default function EventDetailPage() {
 
   const handleRemoveAttendee = async (attendeeId: string) => {
     try {
-      await removeAttendee({
-        variables: {
-          eventId,
-          attendeeId,
-        },
-      });
+      await removeAttendee(attendeeId);
     } catch (error) {
       console.error('Error removing attendee:', error);
     }
@@ -66,7 +42,7 @@ export default function EventDetailPage() {
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <EventHeader 
-          event={data.event} 
+          event={event} 
           onBackClick={() => router.push('/')} 
         />
 
@@ -75,16 +51,16 @@ export default function EventDetailPage() {
           <Card padding="lg">
             <AddAttendeeForm 
               onSubmit={handleAddAttendee}
-              isLoading={isAdding}
+              isLoading={isAddingAttendee}
             />
           </Card>
 
           {/* Attendee List */}
           <Card padding="lg">
             <AttendeeList
-              attendees={data.event.attendees}
+              attendees={event.attendees}
               onRemoveAttendee={handleRemoveAttendee}
-              isRemoving={isRemoving}
+              isRemoving={isRemovingAttendee}
             />
           </Card>
         </div>

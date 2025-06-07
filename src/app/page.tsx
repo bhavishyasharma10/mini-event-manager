@@ -1,19 +1,18 @@
 'use client';
 
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { Event } from '@/lib/types/graphql';
+
 import { useRouter } from 'next/navigation';
-import { GET_EVENTS } from '@/graphql/operations/queries';
 import { EventCard } from '@/components/events/EventCard';
 import { Button } from '@/components/ui/Button';
+import { useEvent } from '@/hooks/useEvent';
 
 export default function HomePage() {
-  const { loading, error, data } = useQuery<{ events: Event[] }>(GET_EVENTS);
+  const { events, isLoadingEvents, eventsError } = useEvent();
   const router = useRouter();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoadingEvents) return <div>Loading...</div>;
+  if (eventsError) return <div>Error: {eventsError.message}</div>;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-8">
@@ -41,7 +40,7 @@ export default function HomePage() {
 
         {/* Event List */}
         <div className="space-y-6">
-          {data?.events.map((event) => (
+          {events?.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>

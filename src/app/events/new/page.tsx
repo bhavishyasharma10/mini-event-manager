@@ -2,33 +2,25 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@apollo/client';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { CREATE_EVENT } from '@/graphql/operations/mutations';
 import { eventValidationSchema } from '@/lib/validations/event';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
+import { useEvent } from '@/hooks/useEvent';
 
 export default function NewEventPage() {
   const router = useRouter();
-  const [createEvent, { loading }] = useMutation(CREATE_EVENT, {
-    onCompleted: () => {
-      router.push('/');
-    },
-  });
+  const { createEvent, isCreatingEvent } = useEvent();
 
   const handleSubmit = async (values: { title: string; date: string }) => {
     try {
       await createEvent({
-        variables: {
-          input: {
-            title: values.title,
-            date: new Date(values.date).toISOString(),
-          },
-        },
+        title: values.title,
+        date: new Date(values.date).toISOString(),
       });
+      router.push('/');
     } catch (error) {
       console.error('Error creating event:', error);
     }
@@ -74,8 +66,8 @@ export default function NewEventPage() {
                   </Button>
                   <Button
                     type="submit"
-                    isLoading={loading}
-                    disabled={!isValid || loading}
+                    isLoading={isCreatingEvent}
+                    disabled={!isValid || isCreatingEvent}
                   >
                     Create Event
                   </Button>
