@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import Link from 'next/link';
 import { Event } from '@/lib/types/graphql';
 import { useRouter } from 'next/navigation';
 import { GET_EVENTS } from '@/graphql/operations/queries';
+import { EventCard } from '@/components/events/EventCard';
+import { Button } from '@/components/ui/Button';
 
 export default function HomePage() {
   const { loading, error, data } = useQuery<{ events: Event[] }>(GET_EVENTS);
@@ -25,45 +26,23 @@ export default function HomePage() {
           <p className="text-gray-600 text-lg mb-6">
             Add events and manage attendees
           </p>
-          <button
+          <Button
             onClick={() => router.push('/events/new')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg flex items-center mx-auto"
+            size="lg"
+            leftIcon={
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+            }
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
             Add New Event
-          </button>
+          </Button>
         </div>
 
         {/* Event List */}
         <div className="space-y-6">
-          {data?.events.map((event: Event) => (
-            <div 
-              key={event.id} 
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6"
-            >
-              <Link href={`/events/${event.id}`} className="block">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-blue-600">
-                      {new Date(event.date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </p>
-                  </div>
-                  <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                    {event.attendees.length} {event.attendees.length === 1 ? 'Attendee' : 'Attendees'}
-                  </div>
-                </div>
-              </Link>
-            </div>
+          {data?.events.map((event) => (
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       </div>
