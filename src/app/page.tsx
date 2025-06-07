@@ -1,23 +1,11 @@
 'use client';
 
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { Event } from '@/lib/types/graphql';
 import { useRouter } from 'next/navigation';
-
-const GET_EVENTS = gql`
-  query GetEvents {
-    events {
-      id
-      title
-      date
-      attendees {
-        id
-      }
-    }
-  }
-`;
+import { GET_EVENTS } from '@/graphql/operations/queries';
 
 export default function HomePage() {
   const { loading, error, data } = useQuery<{ events: Event[] }>(GET_EVENTS);

@@ -2,43 +2,24 @@
 
 import React from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { CreateEventInput } from '@/lib/types/graphql';
 import Link from 'next/link';
-
-const CREATE_EVENT = gql`
-  mutation CreateEvent($input: CreateEventInput!) {
-    createEvent(input: $input) {
-      id
-      title
-      date
-    }
-  }
-`;
-
-const validationSchema = Yup.object({
-  title: Yup.string()
-    .required('Title is required')
-    .min(3, 'Title must be at least 3 characters')
-    .max(100, 'Title must be at most 100 characters'),
-  date: Yup.date()
-    .required('Date is required')
-    .min(new Date(), 'Event date must be in the future'),
-});
+import { CREATE_EVENT } from '@/graphql/operations/mutations';
+import { eventValidationSchema } from '@/lib/validations/event';
 
 export default function NewEventPage() {
   const router = useRouter();
   const [createEvent, { loading, error }] = useMutation(CREATE_EVENT);
   const formRef = React.useRef<HTMLFormElement>(null);
 
-  const formik = useFormik({
+  const newEventForm = useFormik({
     initialValues: {
       title: '',
       date: '',
     },
-    validationSchema,
+    validationSchema: eventValidationSchema,
     onSubmit: async (values) => {
       try {
         await createEvent({
@@ -70,7 +51,7 @@ export default function NewEventPage() {
             </Link>
           </div>
 
-          <form ref={formRef} onSubmit={formik.handleSubmit} className="space-y-6">
+          <form ref={formRef} onSubmit={newEventForm.handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                 Event Title
@@ -79,17 +60,17 @@ export default function NewEventPage() {
                 id="title"
                 name="title"
                 type="text"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.title}
+                onChange={newEventForm.handleChange}
+                onBlur={newEventForm.handleBlur}
+                value={newEventForm.values.title}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 ${
-                  formik.touched.title && formik.errors.title
+                  newEventForm.touched.title && newEventForm.errors.title
                     ? 'border-red-500'
                     : 'border-gray-300'
                 }`}
               />
-              {formik.touched.title && formik.errors.title && (
-                <div className="mt-1 text-sm text-red-600">{formik.errors.title}</div>
+              {newEventForm.touched.title && newEventForm.errors.title && (
+                <div className="mt-1 text-sm text-red-600">{newEventForm.errors.title}</div>
               )}
             </div>
 
@@ -101,17 +82,17 @@ export default function NewEventPage() {
                 id="date"
                 name="date"
                 type="datetime-local"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.date}
+                onChange={newEventForm.handleChange}
+                onBlur={newEventForm.handleBlur}
+                value={newEventForm.values.date}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 ${
-                  formik.touched.date && formik.errors.date
+                  newEventForm.touched.date && newEventForm.errors.date
                     ? 'border-red-500'
                     : 'border-gray-300'
                 }`}
               />
-              {formik.touched.date && formik.errors.date && (
-                <div className="mt-1 text-sm text-red-600">{formik.errors.date}</div>
+              {newEventForm.touched.date && newEventForm.errors.date && (
+                <div className="mt-1 text-sm text-red-600">{newEventForm.errors.date}</div>
               )}
             </div>
 

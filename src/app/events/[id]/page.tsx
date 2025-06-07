@@ -1,42 +1,12 @@
 'use client';
 
 import React from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { Event, Attendee, AddAttendeeInput, RSVP } from '@/lib/types/graphql';
-
-const GET_EVENT = gql`
-  query GetEvent($id: ID!) {
-    event(id: $id) {
-      id
-      title
-      date
-      attendees {
-        id
-        name
-        email
-        rsvp
-      }
-    }
-  }
-`;
-
-const ADD_ATTENDEE = gql`
-  mutation AddAttendee($input: AddAttendeeInput!) {
-    addAttendee(input: $input) {
-      id
-      name
-      email
-      rsvp
-    }
-  }
-`;
-
-const REMOVE_ATTENDEE = gql`
-  mutation RemoveAttendee($eventId: ID!, $attendeeId: ID!) {
-    removeAttendee(eventId: $eventId, attendeeId: $attendeeId)
-  }
-`;
+import { GET_EVENT } from '@/graphql/operations/queries';
+import { ADD_ATTENDEE, REMOVE_ATTENDEE } from '@/graphql/operations/mutations';
+import { attendeeValidationSchema } from '@/lib/validations/event';
 
 export default function EventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params);
