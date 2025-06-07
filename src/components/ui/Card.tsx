@@ -15,6 +15,16 @@ const paddingStyles = {
   lg: 'p-8',
 };
 
+/**
+ * Card component that renders a styled card element
+ * 
+ * @param {Object} props - Component props
+ * @param {ReactNode} props.children - The content to display inside the card
+ * @param {string} [props.className=''] - The class name to apply to the card
+ * @param {string} [props.padding='md'] - The padding to apply to the card
+ * @param {boolean} [props.hover=false] - Whether the card should have a hover effect
+ * @param {Function} [props.onClick] - The function to call when the card is clicked
+ */
 export const Card: React.FC<CardProps> = ({ 
   children, 
   className = '', 

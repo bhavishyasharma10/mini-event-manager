@@ -1,5 +1,8 @@
 import { Event } from "@/lib/types/graphql";
 
+/**
+ * The events mock data
+ */
 export const events: Event[] = [
     {
         id: "1",

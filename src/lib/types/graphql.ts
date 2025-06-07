@@ -1,10 +1,16 @@
 export type RSVP = 'YES' | 'NO' | 'MAYBE';
 
+/**
+ * A tag for an event
+ */
 export interface Tag {
     id: string;
     name: string;
 }
 
+/**
+ * An attendee for an event
+ */
 export interface Attendee {
     id: string;
     name: string;
@@ -12,6 +18,9 @@ export interface Attendee {
     rsvp: RSVP;
 }
 
+/**
+ * An event
+ */
 export interface Event {
     id: string;
     title: string;
@@ -20,11 +29,17 @@ export interface Event {
     attendees: Attendee[];
 }
 
+/**
+ * The input for creating an event
+ */
 export interface CreateEventInput {
     title: string;
     date: string;
 }
 
+/**
+ * The input for adding an attendee to an event
+ */
 export interface AddAttendeeInput {
     eventId: string;
     name: string;
@@ -32,6 +47,9 @@ export interface AddAttendeeInput {
     rsvp: RSVP;
 }
 
+/**
+ * The resolvers for the GraphQL schema
+ */
 export type Resolvers = {
     Query: {
       events: () => Event[];

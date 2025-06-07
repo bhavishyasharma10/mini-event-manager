@@ -10,6 +10,17 @@ interface AddAttendeeFormProps {
   isLoading?: boolean;
 }
 
+/**
+ * Add Attendee Form
+ * 
+ * This component provides a form for adding attendees to an event.
+ * It uses Formik for form handling and Yup for validation.
+ * 
+ * @param {Object} props - Component props
+ * @param {Function} props.onSubmit - Function to handle form submission
+ * @param {boolean} [props.isLoading=false] - Whether the form is loading
+ * @returns {JSX.Element} The rendered form component
+ */
 export const AddAttendeeForm: React.FC<AddAttendeeFormProps> = ({
   onSubmit,
   isLoading,

@@ -1,5 +1,10 @@
 import { RSVP } from '@/lib/types/graphql';
 
+/**
+ * Get the styles for an RSVP
+ * @param rsvp - The RSVP status
+ * @returns The styles for the RSVP
+ */
 export const getRsvpStyles = (rsvp: RSVP): string => {
   switch (rsvp) {
     case 'YES':
@@ -11,6 +16,11 @@ export const getRsvpStyles = (rsvp: RSVP): string => {
   }
 };
 
+/**
+ * Get the label for an RSVP
+ * @param rsvp - The RSVP status
+ * @returns The label for the RSVP
+ */
 export const getRsvpLabel = (rsvp: RSVP): string => {
   switch (rsvp) {
     case 'YES':

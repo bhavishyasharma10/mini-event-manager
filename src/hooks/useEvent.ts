@@ -1,3 +1,15 @@
+/**
+ * Custom hook for managing event-related operations
+ * 
+ * This hook provides a set of functions and state for managing events in the application.
+ * It handles fetching events, creating new events, and managing event data.
+ * 
+ * @example
+ * ```tsx
+ * const { events, loading, error, createEvent } = useEvent();
+ * ```
+ */
+
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_EVENTS, GET_EVENT } from '@/graphql/operations/queries';
 import { CREATE_EVENT } from '@/graphql/operations/mutations';
@@ -27,8 +39,14 @@ interface UseEventReturn {
   refetchEvent: () => Promise<any>;
 }
 
+/**
+ * Hook for managing event operations
+ * @returns Object containing event data and operations
+ */
 export const useEvent = ({ eventId }: UseEventOptions = {}): UseEventReturn => {
-  // Query for all events
+  /**
+   * Query hook for fetching all events
+   */
   const { 
     data: eventsData, 
     loading: isLoadingEvents,
@@ -38,7 +56,9 @@ export const useEvent = ({ eventId }: UseEventOptions = {}): UseEventReturn => {
     skip: !!eventId,
   });
 
-  // Query for a single event
+  /**
+   * Query hook for fetching a single event
+   */
   const { 
     data: eventData, 
     loading: isLoadingEvent,
@@ -49,13 +69,21 @@ export const useEvent = ({ eventId }: UseEventOptions = {}): UseEventReturn => {
     skip: !eventId,
   });
 
-  // Mutation for creating a new event
+  /**
+   * Mutation hook for creating a new event
+   */
   const [createEventMutation, { loading: isCreatingEvent }] = useMutation(CREATE_EVENT, {
     onCompleted: () => {
       refetchEvents();
     },
   });
 
+  /**
+   * Creates a new event
+   * @param input - The event creation data
+   * @returns Promise that resolves to the created event
+   * @throws Error if event creation fails
+   */
   const createEvent = async (input: CreateEventInput): Promise<Event> => {
     try {
       const { data } = await createEventMutation({

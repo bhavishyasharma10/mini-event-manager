@@ -1,8 +1,16 @@
+/**
+ * Event Detail Page
+ * 
+ * This is the page for displaying the details of an event.
+ * It displays the event details, a form for adding attendees, and a list of attendees.
+ * 
+ * @module app/events/[id]/page
+ */
 'use client';
 
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Event, RSVP } from '@/lib/types/graphql';
+import { RSVP } from '@/lib/types/graphql';
 import { EventHeader } from '@/components/events/EventHeader';
 import { AttendeeList } from '@/components/events/AttendeeList';
 import { AddAttendeeForm } from '@/components/events/AddAttendeeForm';

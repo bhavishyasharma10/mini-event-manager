@@ -1,9 +1,16 @@
+/**
+ * New Event Page
+ * 
+ * This is the page for creating a new event.
+ * It displays a form for creating a new event.
+ * 
+ * @module app/events/new/page
+ */
 'use client';
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import { eventValidationSchema } from '@/lib/validations/event';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';

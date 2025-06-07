@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
 
-// Define the configuration schema
+/**
+ * The configuration schema
+ */
 const configSchema = Yup.object({
   // API Configuration
   api: Yup.object({
@@ -51,19 +53,6 @@ const configSchema = Yup.object({
       .default(255),
   }),
 
-  // Feature Flags
-  features: Yup.object({
-    enableEmailNotifications: Yup.boolean()
-      .required()
-      .default(false),
-    enableEventTags: Yup.boolean()
-      .required()
-      .default(true),
-    enableAttendeeComments: Yup.boolean()
-      .required()
-      .default(false),
-  }),
-
   // UI Configuration
   ui: Yup.object({
     defaultDateFormat: Yup.string()
@@ -83,7 +72,9 @@ const configSchema = Yup.object({
   }),
 });
 
-// Define the configuration type
+/**
+ * The configuration type
+ */
 export type AppConfig = {
   api: {
     graphqlEndpoint: string;
@@ -97,11 +88,6 @@ export type AppConfig = {
     maxAttendeeNameLength: number;
     maxAttendeeEmailLength: number;
   };
-  features: {
-    enableEmailNotifications: boolean;
-    enableEventTags: boolean;
-    enableAttendeeComments: boolean;
-  };
   ui: {
     defaultDateFormat: string;
     defaultTimeFormat: string;
@@ -110,7 +96,9 @@ export type AppConfig = {
   };
 };
 
-// Get environment variables with fallbacks
+/**
+ * Get environment variables with fallbacks
+ */
 const getEnvVar = (key: string, fallback: string): string => {
   if (typeof window !== 'undefined') {
     // Client-side: use window.env or fallback
@@ -120,7 +108,9 @@ const getEnvVar = (key: string, fallback: string): string => {
   return process.env[key] || fallback;
 };
 
-// Default configuration values with environment variable overrides
+/**
+ * Default configuration values with environment variable overrides
+ */
 const defaultConfig: AppConfig = {
   api: {
     graphqlEndpoint: getEnvVar('NEXT_PUBLIC_GRAPHQL_ENDPOINT', 'http://localhost:4000/graphql'),
@@ -134,11 +124,6 @@ const defaultConfig: AppConfig = {
     maxAttendeeNameLength: 100,
     maxAttendeeEmailLength: 255,
   },
-  features: {
-    enableEmailNotifications: false,
-    enableEventTags: true,
-    enableAttendeeComments: false,
-  },
   ui: {
     defaultDateFormat: 'MMM d, yyyy',
     defaultTimeFormat: 'h:mm a',
@@ -147,14 +132,19 @@ const defaultConfig: AppConfig = {
   },
 };
 
-// Validate the configuration
+/**
+ * Validate the configuration
+ */
 const config = configSchema.validateSync(defaultConfig, { stripUnknown: true }) as AppConfig;
 
-// Export the validated configuration
+/**
+ * Export the validated configuration
+ */
 export default config;
 
-// Export individual sections for convenience
+/**
+ * Export individual sections for convenience
+ */
 export const apiConfig = config.api;
 export const appConfig = config.app;
-export const featureConfig = config.features;
 export const uiConfig = config.ui; 

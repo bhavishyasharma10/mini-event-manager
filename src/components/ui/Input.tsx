@@ -1,13 +1,15 @@
 import React from 'react';
 import { useField } from 'formik';
 
+/**
+ * The size of the input
+ */
 export type InputSize = 'sm' | 'md' | 'lg';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   name: string;
   label?: string;
   size?: InputSize;
-  helperText?: string;
 }
 
 const sizeStyles: Record<InputSize, string> = {
@@ -16,11 +18,19 @@ const sizeStyles: Record<InputSize, string> = {
   lg: 'px-5 py-3 text-lg',
 };
 
+/**
+ * Input component that renders a styled input element
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.name - The name of the input
+ * @param {string} [props.label] - The label of the input
+ * @param {InputSize} [props.size='md'] - The size of the input
+ * @param {string} [props.className=''] - The class name to apply to the input
+ */
 export const Input: React.FC<InputProps> = ({
   name,
   label,
   size = 'md',
-  helperText,
   className = '',
   ...props
 }) => {
@@ -48,9 +58,6 @@ export const Input: React.FC<InputProps> = ({
       />
       {hasError && (
         <div className="text-sm text-red-600">{meta.error}</div>
-      )}
-      {helperText && !hasError && (
-        <div className="text-sm text-gray-500">{helperText}</div>
       )}
     </div>
   );

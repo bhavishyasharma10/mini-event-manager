@@ -1,3 +1,11 @@
+/**
+ * Home Page
+ * 
+ * This is the home page for the application.
+ * It displays a list of events and a button to add a new event.
+ * 
+ * @module app/page
+ */
 'use client';
 
 import React from 'react';

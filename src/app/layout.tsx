@@ -1,3 +1,11 @@
+/**
+ * Root Layout
+ * 
+ * This is the root layout for the application.
+ * It contains the global layout for the application.
+ * 
+ * @module app/layout
+ */
 import React from 'react';
 import './globals.css';
 import { Metadata } from 'next';

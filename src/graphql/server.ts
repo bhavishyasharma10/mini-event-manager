@@ -1,3 +1,11 @@
+/**
+ * GraphQL Server
+ * 
+ * This module contains the Apollo Server configuration.
+ * It uses the Apollo Server library to create a GraphQL server.
+ * 
+ * @module graphql/server
+ */
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs } from './schema';
@@ -7,6 +15,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { apiConfig, appConfig } from '@/lib/config';
 
+/**
+ * Start the GraphQL server
+ */
 const startServer = async () => {
   const app = express();
   const server = new ApolloServer({

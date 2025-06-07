@@ -10,6 +10,18 @@ interface AttendeeListProps {
   isRemoving?: boolean;
 }
 
+/**
+ * Attendee List
+ * 
+ * This component displays a list of attendees for an event.
+ * It uses the Card component from the UI library for styling.
+ * 
+ * @param {Object} props - Component props
+ * @param {Attendee[]} props.attendees - The list of attendees to display
+ * @param {Function} props.onRemoveAttendee - Function to handle removing an attendee
+ * @param {boolean} [props.isRemoving=false] - Whether the attendee is being removed
+ * @returns {JSX.Element} The rendered list component
+ */
 export const AttendeeList: React.FC<AttendeeListProps> = ({
   attendees,
   onRemoveAttendee,
