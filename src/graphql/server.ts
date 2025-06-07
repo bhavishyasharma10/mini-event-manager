@@ -17,9 +17,14 @@ const startServer = async () => {
 
   app.use(
     '/graphql',
-    cors(),
+    cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    }),
     bodyParser.json(),
-    expressMiddleware(server)
+    expressMiddleware(server, {
+      context: async ({ req }) => ({ req }),
+    })
   );
 
   const PORT = 4000;
