@@ -5,6 +5,7 @@ import { resolvers } from './resolvers';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import { apiConfig, appConfig } from '@/lib/config';
 
 const startServer = async () => {
   const app = express();
@@ -18,7 +19,7 @@ const startServer = async () => {
   app.use(
     '/graphql',
     cors({
-      origin: 'http://localhost:3000',
+      origin: appConfig.environment === 'development' ? 'http://localhost:3000' : undefined,
       credentials: true,
     }),
     bodyParser.json(),
@@ -27,9 +28,9 @@ const startServer = async () => {
     })
   );
 
-  const PORT = 4000;
+  const PORT = parseInt(apiConfig.graphqlEndpoint.split(':')[2]?.split('/')[0] || '4000', 10);
   app.listen(PORT, () => {
-    console.log(`🚀 GraphQL server ready at http://localhost:${PORT}/graphql`);
+    console.log(`🚀 GraphQL server ready at ${apiConfig.graphqlEndpoint}`);
   });
 };
 
