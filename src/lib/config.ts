@@ -8,9 +8,10 @@ const configSchema = Yup.object({
   api: Yup.object({
     graphqlEndpoint: Yup.string()
       .required()
-      .default('http://localhost:4000/graphql')
-      .test('is-url', 'Must be a valid URL', (value) => {
+      .default('/api/graphql')
+      .test('is-valid-endpoint', 'Must be a valid endpoint', (value) => {
         if (!value) return false;
+        if (value.startsWith('/')) return true;
         try {
           new URL(value);
           return true;
@@ -22,6 +23,27 @@ const configSchema = Yup.object({
       .oneOf(['cache-first', 'cache-only', 'network-only', 'no-cache'])
       .required()
       .default('network-only'),
+    retryConfig: Yup.object({
+      maxAttempts: Yup.number()
+        .min(1)
+        .max(5)
+        .required()
+        .default(3),
+      initialDelay: Yup.number()
+        .min(100)
+        .max(1000)
+        .required()
+        .default(300),
+      maxDelay: Yup.number()
+        .min(1000)
+        .max(5000)
+        .required()
+        .default(3000),
+    }).required().default({
+      maxAttempts: 3,
+      initialDelay: 300,
+      maxDelay: 3000,
+    }),
   }),
 
   // Application Settings
@@ -79,6 +101,11 @@ export type AppConfig = {
   api: {
     graphqlEndpoint: string;
     defaultFetchPolicy: 'cache-first' | 'cache-only' | 'network-only' | 'no-cache';
+    retryConfig: {
+      maxAttempts: number;
+      initialDelay: number;
+      maxDelay: number;
+    };
   };
   app: {
     name: string;
@@ -113,8 +140,13 @@ const getEnvVar = (key: string, fallback: string): string => {
  */
 const defaultConfig: AppConfig = {
   api: {
-    graphqlEndpoint: getEnvVar('NEXT_PUBLIC_GRAPHQL_ENDPOINT', 'http://localhost:4000/graphql'),
+    graphqlEndpoint: getEnvVar('NEXT_PUBLIC_GRAPHQL_ENDPOINT', '/api/graphql'),
     defaultFetchPolicy: 'network-only',
+    retryConfig: {
+      maxAttempts: 3,
+      initialDelay: 300,
+      maxDelay: 3000,
+    },
   },
   app: {
     name: getEnvVar('NEXT_PUBLIC_APP_NAME', 'Mini Event Manager'),
