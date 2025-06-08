@@ -27,7 +27,7 @@ export default function NewEventPage() {
         title: values.title,
         date: new Date(values.date).toISOString(),
       });
-      router.push('/');
+      router.push('/events');
     } catch (error) {
       console.error('Error creating event:', error);
     }

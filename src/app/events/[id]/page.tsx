@@ -49,28 +49,26 @@ export default function EventDetailPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <EventHeader 
-          event={event} 
-          onBackClick={() => router.push('/')} 
+        <EventHeader
+          event={event}
+          onBackClick={() => router.back()}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Add Attendee Form */}
           <Card padding="lg">
-            <AddAttendeeForm 
+            <AddAttendeeForm
               onSubmit={handleAddAttendee}
               isLoading={isAddingAttendee}
             />
           </Card>
 
           {/* Attendee List */}
-          <Card padding="lg">
-            <AttendeeList
-              attendees={event.attendees}
-              onRemoveAttendee={handleRemoveAttendee}
-              isRemoving={isRemovingAttendee}
-            />
-          </Card>
+          <AttendeeList
+            attendees={event.attendees}
+            onRemoveAttendee={handleRemoveAttendee}
+            isRemoving={isRemovingAttendee}
+          />
         </div>
       </div>
     </main>
