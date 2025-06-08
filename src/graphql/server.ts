@@ -23,6 +23,7 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: appConfig.environment === 'development',
   });
 
   await server.start();
