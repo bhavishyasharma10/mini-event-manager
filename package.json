@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "server": "tsx src/graphql/server.ts"
+    "server": "tsx src/graphql/server/server.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

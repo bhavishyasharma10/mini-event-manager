@@ -11,8 +11,8 @@
  */
 
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_EVENTS, GET_EVENT } from '@/graphql/operations/queries';
-import { CREATE_EVENT } from '@/graphql/operations/mutations';
+import { GET_EVENTS, GET_EVENT } from '@/graphql/client/operations/queries';
+import { CREATE_EVENT } from '@/graphql/client/operations/mutations';
 import { Event, CreateEventInput } from '@/lib/types/graphql';
 
 interface UseEventOptions {

@@ -8,8 +8,8 @@
  */
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs } from './schema';
-import { resolvers } from './resolvers';
+import { typeDefs } from '@/graphql/server/schema';
+import { resolvers } from '@/graphql/server/resolvers';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';

@@ -8,7 +8,7 @@
  */
 
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
-import { apiConfig } from './config';
+import { apiConfig } from '@/lib/config';
 
 /**
  * The HTTP link for the Apollo Client

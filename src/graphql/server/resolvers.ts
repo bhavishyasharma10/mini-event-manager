@@ -8,8 +8,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { events } from './data';
-import { Event, Attendee, CreateEventInput, AddAttendeeInput } from '@/lib/types/graphql';
-import { Resolvers } from '@/lib/types/graphql';
+import { Event, Attendee, CreateEventInput, AddAttendeeInput, Resolvers } from '@/lib/types/graphql';
 import { toGraphQLError, validateIds, validateCreateEventInput, validateAddAttendeeInput, hasDuplicateEmail, EventManagerError, ErrorCode } from '@/lib/utils/validation';
 
 export const resolvers: Resolvers = {

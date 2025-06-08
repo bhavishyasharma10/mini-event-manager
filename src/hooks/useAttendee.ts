@@ -11,9 +11,9 @@
  */
 
 import { useMutation } from '@apollo/client';
-import { ADD_ATTENDEE, REMOVE_ATTENDEE } from '@/graphql/operations/mutations';
-import { GET_EVENT } from '@/graphql/operations/queries';
-import { Attendee, RSVP, AddAttendeeInput } from '@/lib/types/graphql';
+import { ADD_ATTENDEE, REMOVE_ATTENDEE } from '@/graphql/client/operations/mutations';
+import { GET_EVENT } from '@/graphql/client/operations/queries';
+import { Attendee, AddAttendeeInput } from '@/lib/types/graphql';
 
 interface UseAttendeeOptions {
   eventId: string;
