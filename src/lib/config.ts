@@ -123,13 +123,19 @@ export type AppConfig = {
   };
 };
 
+interface WindowWithEnv extends Window {
+  env?: {
+    [key: string]: string;
+  };
+}
+
 /**
  * Get environment variables with fallbacks
  */
 const getEnvVar = (key: string, fallback: string): string => {
   if (typeof window !== 'undefined') {
     // Client-side: use window.env or fallback
-    return (window as any).env?.[key] || fallback;
+    return (window as WindowWithEnv).env?.[key] || fallback;
   }
   // Server-side: use process.env or fallback
   return process.env[key] || fallback;

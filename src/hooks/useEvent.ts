@@ -10,10 +10,10 @@
  * ```
  */
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, ApolloQueryResult } from '@apollo/client';
 import { GET_EVENTS, GET_EVENT } from '@/graphql/client/operations/queries';
 import { CREATE_EVENT } from '@/graphql/client/operations/mutations';
-import { Event, CreateEventInput } from '@/lib/types/graphql';
+import { Event, CreateEventInput, GetEventsQuery, GetEventQuery } from '@/lib/types/graphql';
 
 interface UseEventOptions {
   eventId?: string;
@@ -35,8 +35,8 @@ interface UseEventReturn {
   
   // Operations
   createEvent: (input: CreateEventInput) => Promise<Event>;
-  refetchEvents: () => Promise<any>;
-  refetchEvent: () => Promise<any>;
+  refetchEvents: () => Promise<ApolloQueryResult<GetEventsQuery>>;
+  refetchEvent: () => Promise<ApolloQueryResult<GetEventQuery>>;
 }
 
 /**

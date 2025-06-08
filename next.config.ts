@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     appVersion: appConfig.version,
     environment: process.env.NODE_ENV || 'development',
   },
+  output: 'standalone',
 };
 
 export default nextConfig;

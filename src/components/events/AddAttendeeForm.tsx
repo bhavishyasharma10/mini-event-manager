@@ -58,9 +58,9 @@ export const AddAttendeeForm: React.FC<AddAttendeeFormProps> = ({
                 name="rsvp"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               >
-                <option value="YES">Yes, I'll be there</option>
-                <option value="NO">No, I can't make it</option>
-                <option value="MAYBE">Maybe, I'll let you know</option>
+                <option value="YES">Yes, I&apos;ll be there</option>
+                <option value="NO">No, I can&apos;t make it</option>
+                <option value="MAYBE">Maybe, I&apos;ll let you know</option>
               </select>
             </div>
 

@@ -40,7 +40,7 @@ const retryLink = new RetryLink({
   },
   attempts: {
     max: apiConfig.retryConfig.maxAttempts,
-    retryIf: (error, _operation) => !!error
+    retryIf: (error) => !!error
   }
 });
 

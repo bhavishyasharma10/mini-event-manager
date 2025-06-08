@@ -60,4 +60,29 @@ export type Resolvers = {
       addAttendee: (_: unknown, args: { input: AddAttendeeInput }) => Attendee;
       removeAttendee: (_: unknown, args: { eventId: string; attendeeId: string }) => boolean;
     };
-  }; 
+  };
+
+export interface GetEventsQuery {
+  events: Array<{
+    id: string;
+    title: string;
+    date: string;
+    attendees: Array<{
+      id: string;
+    }>;
+  }>;
+}
+
+export interface GetEventQuery {
+  event: {
+    id: string;
+    title: string;
+    date: string;
+    attendees: Array<{
+      id: string;
+      name: string;
+      email: string | null;
+      rsvp: 'YES' | 'NO' | 'MAYBE';
+    }>;
+  } | null;
+} 

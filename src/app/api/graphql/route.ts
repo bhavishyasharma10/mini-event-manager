@@ -44,7 +44,7 @@ const server = new ApolloServer({
 });
 
 /**
- * Create and export the handler with CORS support
+ * Create the handler with CORS support
  */
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req: NextRequest) => {
@@ -54,4 +54,16 @@ const handler = startServerAndCreateNextHandler(server, {
   },
 });
 
-export { handler as GET, handler as POST }; 
+/**
+ * GET handler for GraphQL requests
+ */
+export async function GET(request: NextRequest) {
+  return handler(request);
+}
+
+/**
+ * POST handler for GraphQL requests
+ */
+export async function POST(request: NextRequest) {
+  return handler(request);
+} 
